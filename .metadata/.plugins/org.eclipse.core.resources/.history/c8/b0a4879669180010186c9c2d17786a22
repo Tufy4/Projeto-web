@@ -1,0 +1,41 @@
+package br.edu.ifsp.arq;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class DeleteLivroServlet
+ */
+@WebServlet("/DeleteLivroServlet")
+public class DeleteLivroServlet extends HttpServlet {
+	  private static final long serialVersionUID = 1L;
+
+	  
+	  
+	    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	        int id = Integer.parseInt(request.getParameter("id"));
+	        ArrayList<Livro> listaLivros = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+
+	        // Remover o livro com o id fornecido
+	        listaLivros.removeIf(livro -> livro.getId() == id);
+
+	        response.sendRedirect("/ReadLivroServelet");
+	    }
+	    
+	    
+	    
+	    
+	    
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

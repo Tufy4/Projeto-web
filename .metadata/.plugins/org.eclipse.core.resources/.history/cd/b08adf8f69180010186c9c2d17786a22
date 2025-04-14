@@ -1,0 +1,60 @@
+package br.edu.ifsp.arq;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class EditLivroServlet
+ */
+@WebServlet("/EditLivroServlet")
+public class EditLivroServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        ArrayList<Livro> listaLivros = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+
+        Livro livroSelecionado = null;
+        for (Livro l : listaLivros) {
+            if (l.getId() == id) {
+                livroSelecionado = l;
+                break;
+            }
+        }
+
+        // Preparar a resposta para mostrar o formulário de edição
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        out.println("<html><body>");
+        out.println("<h2>Editar Livro</h2>");
+        out.println("<form method='post' action='/atualizar-livro'>");
+        out.println("<input type='hidden' name='id' value='" + livroSelecionado.getId() + "'>");
+        out.println("Título: <input type='text' name='nome' value='" + livroSelecionado.getTitulo() + "'><br>");
+        out.println("Autor: <input type='text' name='autor' value='" + livroSelecionado.getAutor() + "'><br>");
+        out.println("Ano de Publicação: <input type='number' name='ano' value='" + livroSelecionado.getAnoPublicacao() + "'><br>");
+
+        // Exibir opções de gêneros
+        String[] generos = {"Ficção", "Não Ficção", "Fantasia", "Romance"};
+        for (String genero : generos) {
+            boolean checked = false;
+            for (String g : livroSelecionado.getGenero()) {
+                if (g.equals(genero)) {
+                    checked = true;
+                    break;
+                }
+            }
+            out.println("<input type='checkbox' name='genero' value='" + genero + "' " + (checked ? "checked" : "") + ">" + genero + "<br>");
+        }
+
+        out.println("<button type='submit'>Salvar Alterações</button>");
+        out.println("</form>");
+        out.println("</body></html>");
+    }
+}

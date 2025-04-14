@@ -1,0 +1,49 @@
+package br.edu.ifsp.arq;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/DeleteLivroServlet")
+public class DeleteLivroServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      
+        String idParam = request.getParameter("id");
+        if (idParam != null) {
+            int id = Integer.parseInt(idParam);
+
+            
+            ArrayList<Livro> listaLivros = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+
+            
+            if (listaLivros != null) {
+                Livro livroAExcluir = null;
+                for (Livro livro : listaLivros) {
+                    if (livro.getId() == id) {
+                        livroAExcluir = livro;
+                        break;
+                    }
+                }
+
+              
+                if (livroAExcluir != null) {
+                    listaLivros.remove(livroAExcluir);
+                    getServletContext().setAttribute("lista", listaLivros);
+                }
+            }
+        }
+        
+        
+        
+
+        response.sendRedirect("ReadLivroServlet");
+    }
+}

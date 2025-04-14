@@ -1,0 +1,111 @@
+package br.edu.ifsp.arq;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/UpdateLivroServlet")
+public class UpdateLivroServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public UpdateLivroServlet() {
+        super();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        
+       
+        ArrayList<Livro> listaLivros = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+        Livro livroSelecionado = null;
+        for (Livro livro : listaLivros) {
+            if (livro.getId() == id) {
+                livroSelecionado = livro;
+                break;
+            }
+        }
+
+        
+        //se o livro existe
+        if (livroSelecionado != null) {
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            
+            out.println("<html>");
+            out.println("<head><title>Editar Livro</title></head>");
+            out.println("<body>");
+            out.println("<h1>Editar Livro</h1>");
+            out.println("<form action='/Atividade1/AtualizaLivroServlet' method='POST'>");
+            out.println("<input type='hidden' name='id' value='" + livroSelecionado.getId() + "'/>");
+            out.println("<label>Título: </label><input type='text' name='nome' value='" + livroSelecionado.getTitulo() + "' required /><br>");
+            out.println("<label>Autor: </label><input type='text' name='autor' value='" + livroSelecionado.getAutor() + "' required /><br>");
+            out.println("<label>Gênero: </label>");
+
+            
+            //como fiz uma string so, divide ela pelas virgulas
+            String[] generosArray = livroSelecionado.getGenero().split(",");
+            
+            
+            out.println("<br>");
+            String[] todosGeneros = {"Ficção", "Não Ficção", "Fantasia", "Romance"}; 
+            for (String genero : todosGeneros) {
+                boolean existe = false;
+                for (String g : generosArray) {
+                    if (g.trim().equals(genero)) { //ve se o genero atual é igual ao array
+                        existe = true;
+                        break;
+                    }
+                }
+                out.println("<input type='checkbox' name='genero' value='" + genero + "'" + (existe ? " checked" : "") + ">" + genero + "<br>");
+            }
+
+            out.println("<br>");
+            out.println("<label>Ano de Publicação: </label><input type='number' name='ano' value='" + livroSelecionado.getAnoPublicacao() + "' required /><br>");
+            out.println("<input type='submit' value='Atualizar Livro' />");
+            out.println("</form>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+    
+    
+    
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Lógica para salvar as atualizações do livro
+        int id = Integer.parseInt(request.getParameter("id"));
+        String nomeLivro = request.getParameter("nome");
+        String autor = request.getParameter("autor");
+        String anoPub = request.getParameter("ano");
+        String[] generosSelecionados = request.getParameterValues("genero");
+
+        ArrayList<Livro> listaLivros = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+        Livro livroSelecionado = null;
+
+        for (Livro livro : listaLivros) {
+            if (livro.getId() == id) {
+                livroSelecionado = livro;
+                break;
+            }
+        }
+
+        if (livroSelecionado != null) {
+            livroSelecionado.setTitulo(nomeLivro);
+            livroSelecionado.setAutor(autor);
+            livroSelecionado.setAnoPublicacao(Integer.parseInt(anoPub));
+            livroSelecionado.setGenero(generosSelecionados); 
+
+            getServletContext().setAttribute("lista", listaLivros);
+            response.sendRedirect("/Atividade1/ReadLivrosServlet"); // Redireciona para a página de listagem de livros
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Livro não encontrado.");
+        }
+    }
+}

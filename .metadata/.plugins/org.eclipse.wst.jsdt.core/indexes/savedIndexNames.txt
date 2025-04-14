@@ -1,0 +1,6 @@
+INDEX VERSION 1.4+C:\Users\tfzin\OneDrive\Documentos\atividade\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1592908588.index
+1761036827.index
+1017555562.index
+1129430420.index
+235627844.index

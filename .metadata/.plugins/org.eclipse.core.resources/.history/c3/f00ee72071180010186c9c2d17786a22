@@ -1,0 +1,48 @@
+package br.edu.ifsp.arq;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class AtualizaLivroServlet
+ */
+@WebServlet("/AtualizaLivroServlet")
+public class AtualizaLivroServlet extends HttpServlet {
+	 private static final long serialVersionUID = 1L;
+
+	 
+	 
+	    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	            throws ServletException, IOException {
+
+	        int id = Integer.parseInt(request.getParameter("id"));
+	        String nome = request.getParameter("nome");
+	        String autor = request.getParameter("autor");
+	        int ano = Integer.parseInt(request.getParameter("ano"));
+	        String[] genero = request.getParameterValues("genero");
+
+	        ArrayList<Livro> listaLivros = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+
+	        // Atualizar os dados do livro
+	        for (Livro livro : listaLivros) {
+	            if (livro.getId() == id) {
+	                livro.setTitulo(nome);
+	                livro.setAutor(autor);
+	                livro.setAnoPublicacao(ano);
+	                livro.setGenero(genero);
+	                break;
+	            }
+	        }
+
+	        String url = "/ReadLivroServelet";                                         
+			getServletContext().getRequestDispatcher(url).forward(request, response);
+	    }
+	    
+	    
+	}

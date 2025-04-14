@@ -1,0 +1,69 @@
+package br.edu.ifsp.arq;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/ReadLivroServlet")
+public class ReadLivroServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public ReadLivroServlet() {
+        super();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ArrayList<Livro> listaLivro = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+
+        PrintWriter out = response.getWriter();
+        out.append("<h1>Lista de livros</h1>");
+
+        out.append("<table border='1'>");
+        out.append("<thead>");
+        out.append("<tr>");
+        out.append("<th>Título</th>");
+        out.append("<th>Autor</th>");
+        out.append("<th>Gênero</th>");
+        out.append("<th>Ano de Publicação</th>");
+        out.append("<th>Ações</th>");
+        out.append("</tr>");
+        out.append("</thead>");
+        out.append("<tbody>");
+
+        for (Livro livro : listaLivro) {
+            out.append("<tr>");
+            out.append("<td>").append(livro.getTitulo()).append("</td>");
+            out.append("<td>").append(livro.getAutor()).append("</td>");
+            out.append("<td>").append(livro.getGenero()).append("</td>");
+            out.append("<td>").append(String.valueOf(livro.getAnoPublicacao())).append("</td>");
+            out.append("<td>");
+            
+            
+            out.append("<a href='/Atividade1/UpdateLivroServlet?id=" + livro.getId() + "'>Editar</a> | ");
+            
+          
+            out.append("<a href='/Atividade1/DeleteLivroServlet?id=" + livro.getId() + "'>Deletar</a>");
+            
+            out.append("</td>");
+            out.append("</tr>");
+        }
+
+        out.append("</tbody>");
+        out.append("</table>");
+        out.append("<a href='/Atividade1/CreateLivroServlet'>Adicionar Novo Livro</a>");
+        out.append("</body></html>");
+    }
+
+        
+    
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}

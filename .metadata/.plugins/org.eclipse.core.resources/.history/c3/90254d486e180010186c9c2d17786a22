@@ -1,0 +1,36 @@
+@WebServlet("/DeleteLivroServlet")
+public class DeleteLivroServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Obter o id do livro
+        String idParam = request.getParameter("id");
+        if (idParam != null) {
+            int id = Integer.parseInt(idParam);
+
+            // Recuperar a lista de livros do contexto
+            ArrayList<Livro> listaLivros = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+
+            // Verificar se a lista de livros existe e o id é válido
+            if (listaLivros != null) {
+                Livro livroAExcluir = null;
+                for (Livro livro : listaLivros) {
+                    if (livro.getId() == id) {
+                        livroAExcluir = livro;
+                        break;
+                    }
+                }
+
+                // Remover o livro encontrado da lista
+                if (livroAExcluir != null) {
+                    listaLivros.remove(livroAExcluir);
+                    // Atualizar a lista no contexto
+                    getServletContext().setAttribute("lista", listaLivros);
+                }
+            }
+        }
+
+        // Redirecionar para a página de listagem dos livros
+        response.sendRedirect("ReadLivroServlet");
+    }
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	
+	<h1>Livros</h1>
+	<form action="CreateLivroServlet" method="POST">
+	<label for="texto" >Nome livro:</label>
+	<input id="texto" type="text" name="nome" placeholder="Digite seu nome"><br><br>
+	
+	
+	<label for="texto1" >Autor do Livro:</label>
+	<input id="texto1" type="text" name="autor" placeholder="Digite o autor"><br><br>
+	
+	
+	<label for="ano" >Ano de publicação:</label>
+	<input id ="ano" type="number" name="ano"><br><br>
+	
+	<h3>Genero</h3>
+	
+	<input id="ficcao" type="checkbox" name="genero" value="ficcao">
+	<label for="ficcao" >Ficção</label><br>
+	
+	<input id="nficcao" type="checkbox" name="genero" value = "naoficcao">
+	<label for="nficcao" >Não Ficção</label><br>
+	
+	<input id="fantasia" type="checkbox" name="genero" value = "fantasia">
+	<label for="fantasia" >Fantasia</label><br>
+	
+	
+	<input id="romance" type="checkbox" name="genero" value = "romance">
+	<label for="romance" >Romance</label><br>
+	
+	<input type="submit" value="Enviar">
+	</form>
+	
+	
+	
+</html>

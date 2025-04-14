@@ -1,0 +1,69 @@
+package br.edu.ifsp.arq;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/ReadLivroServlet")
+public class ReadLivroServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public ReadLivroServlet() {
+    }
+
+    
+    
+    
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ArrayList<Livro> listaLivro = (ArrayList<Livro>) getServletContext().getAttribute("lista");
+
+        PrintWriter out = response.getWriter();
+
+    
+
+  
+        out.append("<h1>Lista de livros!</h1>");
+
+        
+        out.append("\"<table style='border: 2px solid #333; border-collapse: collapse; width: 80%;'>\"");
+        out.append("<thead>");
+        out.append("<tr>");
+        out.append("<th>Titulo</th>");
+        out.append("<th>Autor</th>");
+        out.append("<th>Genero</th>");
+        out.append("<th>Ano de Publicação</th>");
+        out.append("</tr>");
+        out.append("</thead>");
+        out.append("<tbody>");
+
+        
+        for (Livro livro : listaLivro) {
+            out.append("<tr>");
+            out.append("<td>").append(livro.getTitulo() + "</td>");
+            out.append("<td>").append(livro.getAutor() + "</td>");
+            out.append("<td>").append(livro.getGenero() + "</td>");
+            out.append("<td>").append(String.valueOf(livro.getAnoPublicacao()) + "</td>");
+            out.append("</tr>");
+        }
+
+        out.append("</tbody>");
+        out.append("</table>");
+    }
+
+   
+    
+    
+    
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}

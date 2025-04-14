@@ -1,0 +1,5 @@
+INDEX VERSION 1.134+C:\Users\tfzin\OneDrive\Documentos\atividade\.metadata\.plugins\org.eclipse.jdt.core
+3392203628.index
+1865797976.index
+1129430420.index
+3803894794.index
